@@ -164,3 +164,4 @@ cython_debug/
 .env
 .env.production
 /__pycache__
+/myenv
