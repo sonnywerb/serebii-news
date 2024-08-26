@@ -1,10 +1,11 @@
-from datetime import datetime
-from serebii_scraper import sv_news, tera_raids, event_distributions
 import json
 import smtplib
 import os
+from datetime import datetime
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from dotenv import load_dotenv
+from serebii_scraper import sv_news, tera_raids, event_distributions
 
 def printJson(jsonToPrint):
     json_data = json.dumps(jsonToPrint, ensure_ascii=False, indent=4)
@@ -31,19 +32,20 @@ def format_content():
 now = datetime.now();
 current_date = now.strftime('%m/%d/%y')
 
+load_dotenv()
+
 # email details
 sender_email = os.getenv("SENDER_EMAIL")
 app_password = os.getenv("APP_PASSWORD")
-recipient_email = os.getenv("RECIPIENT_EMAIL")
-bcc_email = os.getenv("BCC_EMAIL")
+mailing_list = os.getenv("MAILING_LIST").split(",")
+print(mailing_list)
 subject = str(current_date) + " Pokémon Scarlet & Violet Updates"
 body = format_content()
 
 # create email message
 message = MIMEMultipart()
 message['From'] = sender_email
-message['To'] = recipient_email
-message['Bcc'] = bcc_email
+message['To'] = ", ".join(mailing_list)
 message['Subject'] = subject
 # attach the email body
 message.attach(MIMEText(body, 'plain'))
@@ -53,7 +55,7 @@ try:
     with smtplib.SMTP('smtp.gmail.com', 587) as server:
         server.starttls()
         server.login(sender_email, app_password)
-        server.sendmail(sender_email, recipient_email, message.as_string())
+        server.sendmail(sender_email, mailing_list, message.as_string())
         print("email sent!")
 except Exception as e:
     print(f"Failed to send email: {e}")
