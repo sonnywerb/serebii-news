@@ -38,7 +38,6 @@ load_dotenv()
 sender_email = os.getenv("SENDER_EMAIL")
 app_password = os.getenv("APP_PASSWORD")
 mailing_list = os.getenv("MAILING_LIST").split(",")
-print(mailing_list)
 subject = str(current_date) + " Pokémon Scarlet & Violet Updates"
 body = format_content()
 
