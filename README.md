@@ -1,0 +1,1 @@
+python script that checks serebii daily for pokemon scarlet and violet news, current tera raid battles, and event distributions for global and na. it then sends an email notification to the mailing list with the news.
